@@ -1,6 +1,5 @@
 package server;
 
-
 import clientHolder.ClientHolder;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,38 +11,61 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+public class Server extends Thread {
 
-public class Server {
-    
     static boolean run = true;
-    static String ip = "localhost"; 
+    static String ip = "localhost";
     static int port = 9090;
     static PrintWriter out;
     static BufferedReader in;
-    static String input; 
+    static String input;
     static List<ClientHolder> clients = new ArrayList();
-    
+
     public static void main(String[] args) throws IOException {
+
         ServerSocket ss = new ServerSocket();
-        ss.bind(new InetSocketAddress(ip,port));
-        
-        
-        while (run){
-        Socket socket = ss.accept();
-        out = new PrintWriter(socket.getOutputStream(),true);
-        in = new BufferedReader (new InputStreamReader(socket.getInputStream()));
-        input = in.readLine();
-        ClientHolder ch = new ClientHolder("test", socket);
-        clients.add(ch);
+        ss.bind(new InetSocketAddress(ip, port));
+
+        while (run) {
+            Socket socket = ss.accept();
+            out = new PrintWriter(socket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            input = in.readLine();
+            ClientHolder ch = new ClientHolder("test", socket);
+            clients.add(ch);
             for (ClientHolder client : clients) {
-                ch.sendMsg("" +socket);
+                ch.sendMsg("" + socket);
             }
-        
+            ch.start();
+            distributingSendMethods("*");
+        }
+    }
+
+    public static void sendMsgToAll(String msg) throws IOException {
+        for (ClientHolder client : clients) {
+            client.sendMsg(msg);
         }
     }
     
-    // SPØRGSMÅL:
-    //Skal instantiate af ClientHolder ligge i while loop?
-    // Skal add ligge i while loop?
+    public static void sendMsgToMultiplyPeople(String choosenPeople) throws IOException{
+        for (ClientHolder client : clients) {
+            if (choosenPeople.equals(client)){
+            client.sendMsg(choosenPeople);
+            }
+        }
+    
+    }
+        
+    public static void distributingSendMethods(String msg) throws IOException {
+        if (msg.contains("*")){
+            sendMsgToAll(msg);
+        }else if(msg.contains(",")){
+        // make method to send multiply people
+        
+        }else {
+        // Send to person
+        
+        }
+    }
 
 }

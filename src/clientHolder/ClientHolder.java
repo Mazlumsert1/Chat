@@ -7,12 +7,13 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import server.Server;
 
 /**
  *
  * @author AlexanderNielsen
  */
-public class ClientHolder implements Runnable {
+public class ClientHolder  extends Thread{
     
     Socket s;
     String username;
@@ -20,7 +21,9 @@ public class ClientHolder implements Runnable {
     static BufferedReader bf;
     static String input; 
     
+    
     public ClientHolder(String username, Socket socket) {
+        
         this.s = socket;
         this.username = username;
     }
