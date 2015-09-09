@@ -50,6 +50,7 @@ public class ClientHolder extends Thread {
         while (true) {
             try {
                 input = bf.readLine();
+                server.commandAccept(input);
             } catch (IOException ex) {
                 Logger.getLogger(ClientHolder.class.getName()).log(Level.SEVERE, null, ex);
             }
