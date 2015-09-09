@@ -22,10 +22,9 @@ public class Server extends Thread {
     static String input;
     static List<ClientHolder> clients = new ArrayList();
     static Server server = new Server();
-    
+
     public static void main(String[] args) throws IOException {
-        
-        
+
         ServerSocket ss = new ServerSocket();
         ss.bind(new InetSocketAddress(ip, port));
 
@@ -36,11 +35,27 @@ public class Server extends Thread {
             input = in.readLine();
             ClientHolder ch = new ClientHolder("test", socket, server);
             clients.add(ch);
-            for (ClientHolder client : clients) {
-                ch.sendMsg("" + socket);
-            }
             ch.start();
-            distributingSendMethods("*");
+
+            //sendMsgToAll(input);
+            System.out.println("Input: " +input);
+            List<String> splitted = Arrays.asList(input.split("#"));
+            String command = splitted.get(0);
+
+            System.out.println(splitted);
+            
+            switch (command) {
+                case "USER":
+                    //Mangler 
+                    break;
+                case "MSG":
+                    distributingSendMethods(input);
+                    break;
+                case "STOP":
+                    removeClient(ch); //Ret denne linje
+                    break;
+            }
+
         }
     }
 
@@ -49,52 +64,60 @@ public class Server extends Thread {
             client.sendMsg(msg);
         }
     }
-    
-    public static void SendMessageToOne(String msg) throws IOException{
-        List <String> splitted = Arrays.asList(msg.split("#"));
+
+    public static void sendMsgToOne(String msg) throws IOException {
+        List<String> splitted = Arrays.asList(msg.split("#"));
         String command = splitted.get(0);
-        String users= splitted.get(1);
+        String users = splitted.get(1);
         String message = splitted.get(2);
-        
+
         for (int i = 0; i < clients.size(); i++) {
-               ClientHolder client = clients.get(i);
-               String user = client.getUsername();
-               if(users.equals(user)){
-                   client.sendMsg(message);
-                }
+            ClientHolder client = clients.get(i);
+            String user = client.getUsername();
+            if (users.equals(user)) {
+                client.sendMsg(message);
             }
-    
+        }
+
     }
-    
-    public static void sendMsgToMultiplyPeople(String msg) throws IOException{
-        List <String> splitted = Arrays.asList(msg.split("#"));
+
+    public static void sendMsgToMultiplyPeople(String msg) throws IOException {
+        List<String> splitted = Arrays.asList(msg.split("#"));
         String command = splitted.get(0);
         String people = splitted.get(1);
         String message = splitted.get(2);
-        List <String > splittedPeople = Arrays.asList(people.split(","));
-        
+        List<String> splittedPeople = Arrays.asList(people.split(","));
+
         for (String splittedPeople1 : splittedPeople) {
             for (int i = 0; i < clients.size(); i++) {
-               ClientHolder client = clients.get(i);
-               String user = client.getUsername();
-               if(splittedPeople1.equals(user)){
-                   client.sendMsg(message);
+                ClientHolder client = clients.get(i);
+                String user = client.getUsername();
+                if (splittedPeople1.equals(user)) {
+                    client.sendMsg(message);
                 }
             }
         }
-        
-        
+
     }
-        
+
     public static void distributingSendMethods(String msg) throws IOException {
-        if (msg.contains("*")){
+        if (msg.contains("*")) {
             sendMsgToAll(msg);
-        }else if(msg.contains(",")){
-        // make method to send multiply people
-        
-        }else {
-        // Send to person
-        
+        } else if (msg.contains(",")) {
+            sendMsgToMultiplyPeople(msg);
+        } else {
+            sendMsgToOne(msg);
+        }
+    }
+
+    public static void removeClient(ClientHolder client) {
+        clients.remove(client);
+        client.removeClient();
+    }
+    
+    public static void printClientList() {
+        for (ClientHolder client : clients) {
+            out.println(clients);
         }
     }
 
