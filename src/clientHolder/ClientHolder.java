@@ -9,10 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import server.Server;
 
-/**
- *
- * @author AlexanderNielsen
- */
+
 public class ClientHolder  extends Thread{
     
     Socket s;
@@ -20,12 +17,20 @@ public class ClientHolder  extends Thread{
     static PrintWriter out;
     static BufferedReader bf;
     static String input; 
+    static Server server;
     
-    
-    public ClientHolder(String username, Socket socket) {
-        
+    public ClientHolder(String username, Socket socket, Server server) {
+        this.server = server;
         this.s = socket;
         this.username = username;
+    }
+
+    public Socket getS() {
+        return s;
+    }
+
+    public String getUsername() {
+        return username;
     }
     
     public void sendMsg(String msg) throws IOException {
