@@ -51,8 +51,13 @@ public class ClientHolder extends Thread {
             try {
                 input = bf.readLine();
                 if (input.equals("STOP#")) {
-                    removeClient();
-                } else {
+                    removeClient(); 
+                
+                }
+//                } else if (input.equals("USERLIST#")){
+//                        server.printClientList();
+//                } 
+                else{
                     server.commandAccept(input, username);
                 }
             } catch (IOException ex) {
@@ -63,10 +68,11 @@ public class ClientHolder extends Thread {
 
     public void removeClient() {
         try {
+            server.removeClient(this);
             s.close();
             bf.close();
             out.close();
-            server.removeClient(this);
+           
         } catch (IOException ex) {
             Logger.getLogger(ClientHolder.class.getName()).log(Level.SEVERE, null, ex);
         }

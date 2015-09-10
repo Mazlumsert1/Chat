@@ -1,6 +1,7 @@
 package server;
 
 import clientHolder.ClientHolder;
+import gui.ChatGui;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,40 +28,46 @@ public class Server extends Thread {
 
         ServerSocket ss = new ServerSocket();
         ss.bind(new InetSocketAddress(ip, port));
-        
+
         while (run) {
             Socket socket = ss.accept();
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out.println("Please input a username(USER#'name'");
+
             input = in.readLine();
             String[] split = input.split("#");
-            
+
             ClientHolder ch = new ClientHolder(split[1], socket, server);
             clients.add(ch);
             ch.start();
             out.println("Welcome to the chat " + split[1] + "!");
-            
+
             printClientList();
+            ChatGui chat = new ChatGui(ch, server);
         }
     }
-    
+
+    public void accept(String username) {
+        input = username;
+    }
+
     public static void commandAccept(String input, String username) throws IOException {
         //sendMsgToAll(input);
-            System.out.println("Input: " +input);
-            List<String> splitted = Arrays.asList(input.split("#"));
-            String command = splitted.get(0);
+        System.out.println("Input: " + input);
+        List<String> splitted = Arrays.asList(input.split("#"));
+        String command = splitted.get(0);
 
-            System.out.println(splitted);
-            
-            switch (command) {
-                case "USER":
-                    //Mangler 
-                    break;
-                case "MSG":
-                    distributingSendMethods(input, username);
-                    break;
-            }
+        System.out.println(splitted);
+
+        switch (command) {
+            case "USER":
+                //Mangler 
+                break;
+            case "MSG":
+                distributingSendMethods(input, username);
+                break;
+        }
     }
 
     public static void sendMsgToAll(String msg, String username) throws IOException {
@@ -68,7 +75,7 @@ public class Server extends Thread {
         String command = splitted.get(0);
         String users = splitted.get(1);
         String message = splitted.get(2);
-        
+
         for (ClientHolder client : clients) {
             client.sendMsg(command + "#" + username + "#" + message);
         }
@@ -122,9 +129,9 @@ public class Server extends Thread {
 
     public static void removeClient(ClientHolder client) {
         clients.remove(client);
-        client.removeClient();
+
     }
-    
+
     public static void printClientList() {
         List<String> onlineUsers = new ArrayList();
         for (ClientHolder client : clients) {
