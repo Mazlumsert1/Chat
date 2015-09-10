@@ -45,7 +45,7 @@ public class Server extends Thread {
         }
     }
     
-    public static void commandAccept(String input) throws IOException {
+    public static void commandAccept(String input, String username) throws IOException {
         //sendMsgToAll(input);
             System.out.println("Input: " +input);
             List<String> splitted = Arrays.asList(input.split("#"));
@@ -58,21 +58,23 @@ public class Server extends Thread {
                     //Mangler 
                     break;
                 case "MSG":
-                    distributingSendMethods(input);
-                    break;
-                case "STOP":
-                   // removeClient(ch); //Ret denne linje
+                    distributingSendMethods(input, username);
                     break;
             }
     }
 
-    public static void sendMsgToAll(String msg) throws IOException {
+    public static void sendMsgToAll(String msg, String username) throws IOException {
+        List<String> splitted = Arrays.asList(msg.split("#"));
+        String command = splitted.get(0);
+        String users = splitted.get(1);
+        String message = splitted.get(2);
+        
         for (ClientHolder client : clients) {
-            client.sendMsg(msg);
+            client.sendMsg(command + "#" + username + "#" + message);
         }
     }
 
-    public static void sendMsgToOne(String msg) throws IOException {
+    public static void sendMsgToOne(String msg, String username) throws IOException {
         List<String> splitted = Arrays.asList(msg.split("#"));
         String command = splitted.get(0);
         String users = splitted.get(1);
@@ -82,13 +84,13 @@ public class Server extends Thread {
             ClientHolder client = clients.get(i);
             String user = client.getUsername();
             if (users.equals(user)) {
-                client.sendMsg(msg);
+                client.sendMsg(command + "#" + username + "#" + message);
             }
         }
 
     }
 
-    public static void sendMsgToMultiplyPeople(String msg) throws IOException {
+    public static void sendMsgToMultiplyPeople(String msg, String username) throws IOException {
         List<String> splitted = Arrays.asList(msg.split("#"));
         String command = splitted.get(0);
         String people = splitted.get(1);
@@ -100,21 +102,21 @@ public class Server extends Thread {
                 ClientHolder client = clients.get(i);
                 String user = client.getUsername();
                 if (splittedPeople1.equals(user)) {
-                    client.sendMsg(message);
+                    client.sendMsg(command + "#" + username + "#" + message);
                 }
             }
         }
 
     }
 
-    public static void distributingSendMethods(String msg) throws IOException {
+    public static void distributingSendMethods(String msg, String username) throws IOException {
+        System.out.println(username);
         if (msg.contains("*")) {
-            System.out.println("Contains *");
-            sendMsgToAll(msg);
+            sendMsgToAll(msg, username);
         } else if (msg.contains(",")) {
-            sendMsgToMultiplyPeople(msg);
+            sendMsgToMultiplyPeople(msg, username);
         } else {
-            sendMsgToOne(msg);
+            sendMsgToOne(msg, username);
         }
     }
 
