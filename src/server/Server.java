@@ -142,4 +142,9 @@ public class Server extends Thread {
         out.println("Online: " + onlineUsers);
     }
 
+    public static void stopServer() throws IOException{
+    ServerSocket ss = null;
+        ss.close();
+    
+    }
 }
