@@ -29,11 +29,7 @@ public class TestChat {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    Server.main(null);
-                } catch (IOException ex) {
-                    Logger.getLogger(TestChat.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                Server.main(null);
             }
         }).start();
     }
@@ -43,17 +39,6 @@ public class TestChat {
         Server.stopServer();
     }
 
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
-
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
     @Test
     public void hello() throws IOException {
 
@@ -61,19 +46,16 @@ public class TestChat {
         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
         Scanner in = new Scanner(socket.getInputStream());
 
-        //------------------Testes om peter er i userlisten.-------------------
         out.println("USER#peter");
         String user = in.nextLine();
         System.out.println(user);
         Assert.assertEquals("USERLIST#[peter]", user);
-         //---------------------------------------------------------------------
-
-        //--------------Testes om beskeden bliver sendt til alle.--------------
+         
         out.println("MSG#*#Java");
         String msg = in.nextLine();
         System.out.println(msg);
         Assert.assertEquals("MSG#*#Java", msg);
-        //---------------------------------------------------------------------
+       
 
         Socket socket2 = new Socket("localhost", 9090);
         PrintWriter out2 = new PrintWriter(socket2.getOutputStream(), true);
@@ -89,12 +71,13 @@ public class TestChat {
         System.out.println(msg1);
         Assert.assertEquals("MSG#[peter,hans]#JavaScript", msg1);
 
-        //---------------Testes om en specifik bruger modtag beskeden----------
+        
+//---------------Testes om en specifik bruger modtag beskeden----------
         out.println("MSG#lars#hey");
         String msg2 = in.nextLine();
         System.out.println(msg1);
         Assert.assertEquals("MSG#lars#hey", msg1);
-        //---------------------------------------------------------------------
+
 
     }
 }
