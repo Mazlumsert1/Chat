@@ -3,7 +3,7 @@ package client;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.ArrayList;
+
 import java.util.Observable;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -16,6 +16,7 @@ public class client extends Observable implements Runnable {
     Socket socket;
     Scanner br;
     PrintWriter pw;
+    boolean run = true;
 
     public client(String ip, int port) {
         this.ip = ip;
@@ -31,14 +32,17 @@ public class client extends Observable implements Runnable {
         } catch (IOException ex) {
             Logger.getLogger(client.class.getName()).log(Level.SEVERE, null, ex);
         }
-        while (true) {
+       
+        while (run) {
             String msg = br.nextLine();
             System.out.println("Msg i client " + msg);
             setChanged();
             notifyObservers(msg);
             if (msg.equals("STOP#")) {
                 logout();
+                run = false;
             }
+            
         }
     }
 

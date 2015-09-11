@@ -22,7 +22,10 @@ public class ChatGui extends javax.swing.JFrame implements Observer {
     public ChatGui() {
         initComponents();
         c = new client("localhost", 9090);
-        c.run();
+        
+        Thread t1 = new Thread(c);
+        t1.start();
+        
         c.addObserver(this);
     }
 
