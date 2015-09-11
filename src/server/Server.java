@@ -1,7 +1,6 @@
 package server;
 
 import clientHolder.ClientHolder;
-import gui.ChatGui;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -23,6 +22,7 @@ public class Server extends Thread {
     static String input;
     static List<ClientHolder> clients = new ArrayList();
     static Server server = new Server();
+    static String usr = null;
 
     public static void main(String[] args) throws IOException {
 
@@ -36,6 +36,7 @@ public class Server extends Thread {
             out.println("Please input a username(USER#'name'");
 
             input = in.readLine();
+            
             String[] split = input.split("#");
 
             ClientHolder ch = new ClientHolder(split[1], socket, server);
@@ -44,12 +45,12 @@ public class Server extends Thread {
             out.println("Welcome to the chat " + split[1] + "!");
 
             printClientList();
-            ChatGui chat = new ChatGui(ch, server);
         }
     }
 
     public void accept(String username) {
-        input = username;
+        String test = "hej";
+        usr = test;
     }
 
     public static void commandAccept(String input, String username) throws IOException {
@@ -71,6 +72,7 @@ public class Server extends Thread {
     }
 
     public static void sendMsgToAll(String msg, String username) throws IOException {
+        System.out.println(msg);
         List<String> splitted = Arrays.asList(msg.split("#"));
         String command = splitted.get(0);
         String users = splitted.get(1);
