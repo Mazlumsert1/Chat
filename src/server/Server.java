@@ -11,7 +11,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
+
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -27,7 +27,8 @@ public class Server extends Thread {
     static BufferedReader in;
     static String input;
 
-    static List<ClientHolder> clients = Collections.synchronizedList(new ArrayList<ClientHolder>());
+//    static List<ClientHolder> clients = Collections.synchronizedList(new ArrayList<ClientHolder>());
+     static List<ClientHolder> clients = new ArrayList();
 
     static Server server = new Server();
     static String usr = null;
@@ -61,7 +62,7 @@ public class Server extends Thread {
             }
         } catch (IOException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
+        }finally {
             Utils.closeLogger(Server.class.getName());
         }
 
@@ -171,11 +172,8 @@ public class Server extends Thread {
 
     public static void stopServer() throws IOException {
         ServerSocket ss = null;
-        if (ss != null) {
-            ss.close();
-        } else {
-            out.println("Can't stop the server");
-        }
+        ss.close();
+
 
     }
 

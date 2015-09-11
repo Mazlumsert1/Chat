@@ -13,12 +13,12 @@ import server.Server;
 
 public class ClientHolder extends Thread {
 
-    Socket s;
-    String username;
-    static PrintWriter out;
-    static BufferedReader bf;
-    static String input;
-    static Server server;
+     Socket s;
+     String username;
+     PrintWriter out;
+     BufferedReader bf;
+     String input;
+     Server server;
  
 
     public ClientHolder(String username, Socket socket, Server server) {
@@ -99,4 +99,5 @@ public class ClientHolder extends Thread {
         }
     }
 
+ 
 }

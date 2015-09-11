@@ -1,9 +1,11 @@
-sep. 11, 2015 2:12:23 PM server.Server main
+sep 11, 2015 5:56:53 PM server.Server main
 SEVERE: null
-java.net.BindException: Address already in use
-	at java.net.PlainSocketImpl.socketBind(Native Method)
-	at java.net.AbstractPlainSocketImpl.bind(AbstractPlainSocketImpl.java:387)
-	at java.net.ServerSocket.bind(ServerSocket.java:375)
-	at java.net.ServerSocket.bind(ServerSocket.java:329)
-	at server.Server.main(Server.java:38)
+java.net.BindException: Address already in use: JVM_Bind
+	at java.net.DualStackPlainSocketImpl.bind0(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketBind(DualStackPlainSocketImpl.java:106)
+	at java.net.AbstractPlainSocketImpl.bind(AbstractPlainSocketImpl.java:376)
+	at java.net.PlainSocketImpl.bind(PlainSocketImpl.java:190)
+	at java.net.ServerSocket.bind(ServerSocket.java:376)
+	at java.net.ServerSocket.bind(ServerSocket.java:330)
+	at server.Server.main(Server.java:43)
 

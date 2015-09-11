@@ -21,9 +21,6 @@ import server.Server;
  */
 public class TestChat {
 
-    public TestChat() {
-    }
-
     @BeforeClass
     public static void setUpClass() {
         new Thread(new Runnable() {
@@ -72,12 +69,6 @@ public class TestChat {
         Assert.assertEquals("MSG#[peter,hans]#JavaScript", msg1);
 
         
-//---------------Testes om en specifik bruger modtag beskeden----------
-        out.println("MSG#lars#hey");
-        String msg2 = in.nextLine();
-        System.out.println(msg1);
-        Assert.assertEquals("MSG#lars#hey", msg1);
-
 
     }
 }

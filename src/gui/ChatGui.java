@@ -9,10 +9,7 @@ import client.client;
 import java.util.Observable;
 import java.util.Observer;
 
-/**
- *
- * @author Lenovo
- */
+
 public class ChatGui extends javax.swing.JFrame implements Observer {
 
     String message;
@@ -89,9 +86,7 @@ public class ChatGui extends javax.swing.JFrame implements Observer {
         c.send(jTextField3.getText());
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
