@@ -160,7 +160,6 @@ public class Server extends Thread {
             onlineUsers.add(client.getUsername());
            
         }
-
         String usersOnline = onlineUsers.toString();
         String output;
         
@@ -168,18 +167,16 @@ public class Server extends Thread {
         output = output.replace("]", "}");
         
         out.println("USERLIST#" + output);
-
     }
 
-    public static void stopServer() throws IOException{
-    ServerSocket ss = null;
-       if (ss != null){
-           ss.close();
-       }else{
-         out.println("Cant stop the server");
-       }
-       
-    
+    public static void stopServer() throws IOException {
+        ServerSocket ss = null;
+        if (ss != null) {
+            ss.close();
+        } else {
+            out.println("Can't stop the server");
+        }
+
     }
 
 }
