@@ -5,11 +5,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Server extends Thread {
@@ -20,7 +22,7 @@ public class Server extends Thread {
     static PrintWriter out;
     static BufferedReader in;
     static String input;
-    static List<ClientHolder> clients = new ArrayList();
+    static List<ClientHolder> clients = Collections.synchronizedList(new ArrayList<ClientHolder>());
     static Server server = new Server();
     static String usr = null;
 
@@ -138,13 +140,19 @@ public class Server extends Thread {
         List<String> onlineUsers = new ArrayList();
         for (ClientHolder client : clients) {
             onlineUsers.add(client.getUsername());
+           
         }
-        out.println("Online: " + onlineUsers);
+        out.println("Online: " +  onlineUsers);
     }
 
     public static void stopServer() throws IOException{
     ServerSocket ss = null;
-        ss.close();
+       if (ss != null){
+           ss.close();
+       }else{
+         out.println("Cant stop the server");
+       }
+       
     
     }
 }
