@@ -4,13 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Observable;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import server.Server;
@@ -56,14 +52,12 @@ public class ClientHolder extends Thread {
         while (true) {
             try {
                 input = bf.readLine();
-                System.out.println("ClientHolder input:" + input);
                 if (input.equals("STOP#")) {
                     removeClient(); 
                 
-                }
-//                } else if (input.equals("USERLIST#")){
-//                        server.printClientList();
-//                } 
+                } else if (input.equals("USERLIST#")){
+                        server.printClientList();
+                } 
                 else{
                     server.commandAccept(input, username);
                 }

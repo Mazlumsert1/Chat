@@ -11,6 +11,10 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import utils.Utils;
 
 public class Server extends Thread {
 
@@ -20,32 +24,43 @@ public class Server extends Thread {
     static PrintWriter out;
     static BufferedReader in;
     static String input;
-    static List<ClientHolder> clients = new ArrayList();
+    static List<ClientHolder> clients = new ArrayList<>();
     static Server server = new Server();
     static String usr = null;
+    private static final Properties properties = Utils.initProperties("server.properties");
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
+        String logFile = properties.getProperty("logFile");
+        Utils.setLogFile(logFile, Server.class.getName());
+        
+        try {
+            ServerSocket ss = new ServerSocket();
+            ss.bind(new InetSocketAddress(ip, port));
 
-        ServerSocket ss = new ServerSocket();
-        ss.bind(new InetSocketAddress(ip, port));
+            while (run) {
+                Socket socket = ss.accept();
+                Logger.getLogger(Server.class.getName()).log(Level.INFO, "Connected to a client");
+                out = new PrintWriter(socket.getOutputStream(), true);
+                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                out.println("Please input a username(USER#'name'");
 
-        while (run) {
-            Socket socket = ss.accept();
-            out = new PrintWriter(socket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            out.println("Please input a username(USER#'name'");
+                input = in.readLine();
 
-            input = in.readLine();
-            
-            String[] split = input.split("#");
+                String[] split = input.split("#");
 
-            ClientHolder ch = new ClientHolder(split[1], socket, server);
-            clients.add(ch);
-            ch.start();
-            out.println("Welcome to the chat " + split[1] + "!");
+                ClientHolder ch = new ClientHolder(split[1], socket, server);
+                clients.add(ch);
+                ch.start();
+                out.println("Welcome to the chat " + split[1] + "!");
 
-            printClientList();
+                printClientList();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            Utils.closeLogger(Server.class.getName());
         }
+
     }
 
     public void accept(String username) {
@@ -136,15 +151,26 @@ public class Server extends Thread {
 
     public static void printClientList() {
         List<String> onlineUsers = new ArrayList();
+        
         for (ClientHolder client : clients) {
             onlineUsers.add(client.getUsername());
         }
-        out.println("Online: " + onlineUsers);
+        String usersOnline = onlineUsers.toString();
+        String output;
+        
+        output = usersOnline.replace("[", "{");
+        output = output.replace("]", "}");
+        
+        out.println("USERLIST#" + output);
     }
 
-    public static void stopServer() throws IOException{
-    ServerSocket ss = null;
-        ss.close();
-    
+    public static void stopServer() throws IOException {
+        ServerSocket ss = null;
+        if (ss != null) {
+            ss.close();
+        } else {
+            out.println("Can't stop the server");
+        }
+
     }
 }
