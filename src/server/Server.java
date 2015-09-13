@@ -11,6 +11,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import java.util.List;
 import java.util.Properties;
@@ -27,8 +28,8 @@ public class Server extends Thread {
     static BufferedReader in;
     static String input;
 
-//    static List<ClientHolder> clients = Collections.synchronizedList(new ArrayList<ClientHolder>());
-     static List<ClientHolder> clients = new ArrayList();
+    static List<ClientHolder> clients = Collections.synchronizedList(new ArrayList<ClientHolder>());
+//     static List<ClientHolder> clients = new ArrayList();
 
     static Server server = new Server();
     static String usr = null;
@@ -47,7 +48,7 @@ public class Server extends Thread {
                 Logger.getLogger(Server.class.getName()).log(Level.INFO, "Connected to a client");
                 out = new PrintWriter(socket.getOutputStream(), true);
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                out.println("Please input a username(USER#'name'");
+//                out.println("Please input a username(USER#'name'");
 
                 input = in.readLine();
 
@@ -56,7 +57,7 @@ public class Server extends Thread {
                 ClientHolder ch = new ClientHolder(split[1], socket, server);
                 clients.add(ch);
                 ch.start();
-                out.println("Welcome to the chat " + split[1] + "!");
+//                out.println("Welcome to the chat " + split[1] + "!");
 
                 printClientList();
             }
@@ -167,12 +168,12 @@ public class Server extends Thread {
         output = usersOnline.replace("[", "{");
         output = output.replace("]", "}");
         
-        out.println("USERLIST#" + output);
+//        out.println("USERLIST#" + output);
     }
 
     public static void stopServer() throws IOException {
         ServerSocket ss = null;
-        ss.close();
+//        ss.close();
 
 
     }

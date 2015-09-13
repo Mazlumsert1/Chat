@@ -36,8 +36,12 @@ public class TestChat {
         Server.stopServer();
     }
 
+//    public void hello() throws IOException {
+////       test1();
+////       test2();
+//   }
     @Test
-    public void hello() throws IOException {
+    public void test1() throws IOException {
 
         Socket socket = new Socket("localhost", 9090);
         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
@@ -46,29 +50,48 @@ public class TestChat {
         out.println("USER#peter");
         String user = in.nextLine();
         System.out.println(user);
-        Assert.assertEquals("USERLIST#[peter]", user);
-         
+        Assert.assertEquals("USERLIST#{peter}", user);
+
+    }
+
+    @Test
+    public void test2() throws IOException {
+        Socket socket = new Socket("localhost", 9090);
+        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+        Scanner in = new Scanner(socket.getInputStream());
+
         out.println("MSG#*#Java");
         String msg = in.nextLine();
         System.out.println(msg);
         Assert.assertEquals("MSG#*#Java", msg);
-       
+
+    }
+
+    @Test
+    public void test3() throws IOException {
 
         Socket socket2 = new Socket("localhost", 9090);
         PrintWriter out2 = new PrintWriter(socket2.getOutputStream(), true);
-        Scanner in2 = new Scanner(socket.getInputStream());
+        Scanner in2 = new Scanner(socket2.getInputStream());
 
         out2.println("USER#hans");
-        String user1 = in.nextLine();
+        String user1 = in2.nextLine();
         System.out.println(user1);
         Assert.assertEquals("USERLIST#[peter,hans]#", user1);
 
+    }
+
+    @Test
+    public void test4() throws IOException {
+
+        Socket socket2 = new Socket("localhost", 9090);
+        PrintWriter out2 = new PrintWriter(socket2.getOutputStream(), true);
+        Scanner in2 = new Scanner(socket2.getInputStream());
+
         out2.println("MSG#*#JavaScript");
-        String msg1 = in.nextLine();
+        String msg1 = in2.nextLine();
         System.out.println(msg1);
         Assert.assertEquals("MSG#[peter,hans]#JavaScript", msg1);
-
-        
 
     }
 }
