@@ -37,11 +37,13 @@ public class client extends Observable implements Runnable {
             System.out.println("Msg i client " + msg);
             setChanged();
             notifyObservers(msg);
+            if (msg.equals("USER#")) {
+                login(msg);
+            }
             if (msg.equals("STOP#")) {
                 logout();
-                run = false;
             }
-            
+            pw.flush();
         }
     }
 
@@ -52,7 +54,6 @@ public class client extends Observable implements Runnable {
     }
 
     public void login(String username) {
-        pw.println("Log in please");
         pw.println(username);
         //send login til serveren
         //user#ulla
@@ -61,6 +62,7 @@ public class client extends Observable implements Runnable {
 
     public void logout() {
         try {
+            run = false;
             socket.close();
             br.close();
             pw.close();

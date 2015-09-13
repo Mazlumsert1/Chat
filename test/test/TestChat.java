@@ -37,8 +37,10 @@ public class TestChat {
     }
 
 //    public void hello() throws IOException {
-////       test1();
-////       test2();
+//       test1();
+//       test2();
+//       test3();
+//       test4();
 //   }
     @Test
     public void test1() throws IOException {

@@ -1,6 +1,2 @@
-sep 11, 2015 10:56:12 PM server.Server main
-INFO: Connected to a client
-sep 11, 2015 10:56:31 PM server.Server main
-INFO: Connected to a client
-sep 11, 2015 10:56:50 PM server.Server main
+sep 13, 2015 10:08:17 AM server.Server main
 INFO: Connected to a client

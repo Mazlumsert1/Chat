@@ -22,7 +22,7 @@ import utils.Utils;
 public class Server extends Thread {
 
     static boolean run = true;
-    static String ip = "localhost";
+    static String ip = "100.86.74.7";
     static int port = 9090;
     static PrintWriter out;
     static BufferedReader in;
