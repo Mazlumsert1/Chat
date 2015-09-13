@@ -48,7 +48,7 @@ public class Server extends Thread {
                 Logger.getLogger(Server.class.getName()).log(Level.INFO, "Connected to a client");
                 out = new PrintWriter(socket.getOutputStream(), true);
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//                out.println("Please input a username(USER#'name'");
+                out.println("Please input a username(USER#'name'");
 
                 input = in.readLine();
 
@@ -57,7 +57,7 @@ public class Server extends Thread {
                 ClientHolder ch = new ClientHolder(split[1], socket, server);
                 clients.add(ch);
                 ch.start();
-//                out.println("Welcome to the chat " + split[1] + "!");
+                out.println("Welcome to the chat " + split[1] + "!");
 
                 printClientList();
             }
@@ -83,9 +83,6 @@ public class Server extends Thread {
         System.out.println(splitted);
 
         switch (command) {
-            case "USER":
-                //Mangler 
-                break;
             case "MSG":
                 distributingSendMethods(input, username);
                 break;
@@ -168,7 +165,7 @@ public class Server extends Thread {
         output = usersOnline.replace("[", "{");
         output = output.replace("]", "}");
         
-//        out.println("USERLIST#" + output);
+        out.println("USERLIST#" + output);
     }
 
     public static void stopServer() throws IOException {
